@@ -1,24 +1,26 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
-const mongoose = require('mongoose');
-const authRoute = require('./routes/auth');
-dotenv.config( { path : '.env'} )
+const mongoose = require("mongoose");
+const cors = require("cors");
+
+dotenv.config();
+const port = 4000;
+// connect to db
+mongoose.connect(
+  process.env.DB_CONNECT,
+  { useUnifiedTopology: true, useNewUrlParser: true },
+  () => console.log("connected to db")
+);
+
+// Import routes
+const postRoutes = require("./routes/post");
+
+// Middlewares
 app.use(express.json());
-const PORT = process.env.PORT || 8080
+app.use(cors());
 
-//mongoose
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-//   useFindAndModify: false,
-//   useCreateIndex: true
-})
-.then(console.log("connected to Mongoo"))
-.catch((err) => console.log(err));
+// route Middlewares
+app.use("/api/posts", postRoutes);
 
-
-// routes
-app.use("api/auth", authRoute);
-
-app.listen(PORT, ()=> { console.log(`Server is running on http://localhost:${PORT}`)});
+app.listen(process.env.port, () => console.log(`server up and runing on port ${port}`));
