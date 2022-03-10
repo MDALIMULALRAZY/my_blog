@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 dotenv.config();
-const port = 4000;
+
 // connect to db
 mongoose.connect(
   process.env.DB_CONNECT,
@@ -23,4 +23,4 @@ app.use(cors());
 // route Middlewares
 app.use("/api/posts", postRoutes);
 
-app.listen(process.env.port, () => console.log(`server up and runing on port ${port}`));
+app.listen(4000, () => console.log("server up and runing on port 4000!"));
